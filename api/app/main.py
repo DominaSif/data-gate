@@ -2,6 +2,7 @@ import asyncpg
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.config import settings
+from app.routers import documents
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -10,6 +11,7 @@ async def lifespan(app: FastAPI):
     await app.state.pool.close()
 
 app = FastAPI(title="api-shield", lifespan=lifespan)
+app.include_router(documents.router)
 
 @app.get("/health")
 async def health():
